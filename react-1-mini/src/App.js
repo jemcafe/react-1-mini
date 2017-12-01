@@ -4,13 +4,24 @@ import './App.css';
 
 class App extends Component {
   constructor () {
-    // super()  should come before  this.____
+    // super()  should come before  this.state
     super();
     this.state = {
       friends: [],
       picture: '',
-      name: '',
+      name: ''
     }
+  }
+
+  addFriend () {
+    this.setState({
+      picture: '',
+      name: '',
+      friends: [...this.state.friends, {
+        picture: this.state.picture,
+        name: this.state.name,
+      }]
+    })
   }
 
   updateName ( value ) {
@@ -28,17 +39,26 @@ class App extends Component {
   }
 
   // Should always have a  render  method which draws to the screen
-  // onChange  is an attribute that occurs when the  value  of an element has changed
+  // onChange attribute that occurs when the  value  of an element has changed
   render() {
     return (
       <div>
         Pictures:
-        <input onChange={ event => this.updatePicture(event.target.value) } value={this.state.picture}/>
+        <input onChange={ event => this.updatePicture(event.target.value) } value={ this.state.picture }/>
 
         Name:
-        <input onChange={ event => this.updateName(event.target.value) } value={this.state.name}/>
+        <input onChange={ event => this.updateName(event.target.value) } value={ this.state.name }/>
 
-          <button>Add friends</button>
+          <button onClick={ () => this.addFriend() }>Add friends</button>
+
+        <div>
+          { this.state.friends.map( (friend) =>
+            <div>
+              <img src={ friend.picture } width="100px"/>
+              Name: { friend.name }
+            </div>
+          ) }
+        </div>
 
         <div>
           State: {JSON.stringify(this.state)}
